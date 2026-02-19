@@ -1,0 +1,12 @@
+﻿@BASE_URL = http://localhost:5000
+
+
+POST {{BASE_URL}}/api/send-email 
+Content-Type: application/json
+
+{
+    "to": ["mechseiko@gmail.com", "saadidris23@gmail.com"],
+    "text": "nothing to see here",
+    "html": "<strong>This is a strong text</strong>",
+    "subject": "Test120"
+}
