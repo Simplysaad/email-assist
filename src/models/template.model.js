@@ -12,11 +12,11 @@ const templateSchema = new Schema({
     type: String,
     required: true
   },
-  userId: {
-    type: Schema.Types.ObjectId,
-    ref: "users",
-    required: true
-  },
+  // userId: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: "users",
+  //   required: true
+  // },
   subject: {
     type: String,
     default: "New notification"

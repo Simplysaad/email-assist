@@ -7,9 +7,13 @@ Content-Type: application/json
 {
     "to": ["mechseiko@gmail.com", "saadidris23@gmail.com"],
     "text": "nothing to see here",
-    "html": "<strong>This is a strong text</strong>",
-    "subject": "Test120"
+    "subject": "Test120",
+    "templateId":"69979797c03a8af2383efb0a",
+    "templateParams": {
+        "name": "saad"
+    }
 }
+
 ###
 
 POST {{BASE_URL}}/api/template
@@ -18,7 +22,7 @@ Content-Type: application/json
 {
     "title": "new Template",
     "description": "nothing to see here",
-    "body": "<strong>This is a strong text</strong>",
+    "body": "<strong>hello,{{{name}}}</strong>",
     "subject": "Test120"
 }
 
