@@ -10,3 +10,16 @@ Content-Type: application/json
     "html": "<strong>This is a strong text</strong>",
     "subject": "Test120"
 }
+###
+
+POST {{BASE_URL}}/api/template
+Content-Type: application/json
+
+{
+    "title": "new Template",
+    "description": "nothing to see here",
+    "body": "<strong>This is a strong text</strong>",
+    "subject": "Test120"
+}
+
+

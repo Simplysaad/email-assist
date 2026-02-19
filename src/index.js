@@ -1,6 +1,8 @@
 ﻿import express from "express";
 import "dotenv/config";
 import { sendEmail } from "./utils/nodemailer.util.js";
+import User from "./models/user.model.js";
+import Template from "./models/template.model.js";
 const app = express();
 
 app.use(express.json());
@@ -17,32 +19,41 @@ app.listen(process.env.PORT, () => {
 //   userID
 // }
 
+// const sampleUser = {
+//   name: "saad idrs",
+//   emailAddress: "saadidris23@gmail.com",
+//   _id: "dhmakn37i7diukj398u"
+// };
+
+app.post("/api/template", async (req, res, next) => {
+  try {
+    const { title, subject, body, description } = req.body;
+
+    // const currentUser = sampleUser
+    // const currentUser = User.findOne({_id: })
+
+    const random = Math.floor(Math.random * 10);
+
+    const newTemplate = new Template({
+      subject,
+      body,
+      description
+    });
+
+    newTemplate.slug = title?.toLowerCase().split(" ").join("-") + random;
+
+    await newTemplate.save()
 
 
-// app.post("/api/send-email", async (req, res, next) => {
-//   // Now expecting templateId (e.g., "alpha/welcome") and params
-//   const { to, subject, templateId, templateParams, text } = req.body;
-
-//   try {
-//     await sendEmail({
-//       to,
-//       subject: subject || "New Notification",
-//       template: templateId, // Pass the slug to the util
-//       data: templateParams, // The variables for React
-//       message: text // Fallback plain text
-//     });
-
-//     res.status(201).json({
-//       success: true,
-//       message: `Mail sent to ${to} successfully`
-//     });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ success: false, error: "Failed to send email" });
-//   }
-// });
-
-
+    return res.status(201).json({
+      success: true,
+      message: `new template created successfully`,
+      data: newTemplate
+    })
+  } catch (err) {
+    next(err);
+  }
+});
 
 app.post("/api/send-email", async (req, res, next) => {
   const { to, text, html, subject } = req.body;
@@ -58,7 +69,7 @@ app.post("/api/send-email", async (req, res, next) => {
     next("Error encountered while sending email", err);
   }
 
-  res.status(201).json({
+  return res.status(201).json({
     success: true,
     message: `Mail sent to ${to} successfully`
     // data: {}
