@@ -8,22 +8,22 @@ Content-Type: application/json
     "to": ["mechseiko@gmail.com", "saadidris23@gmail.com"],
     "text": "nothing to see here",
     "subject": "Test120",
-    "templateId":"69979797c03a8af2383efb0a",
+    "templateId":"69983ac6e50486c7a7bc8045",
     "templateParams": {
-        "name": "ihud"
+        "name": "saad",
+        "subject": "Greetings 234",
+        "reset-link": "http://localhost:5000"
     }
 }
 
-###
 
+###
 POST {{BASE_URL}}/api/template
 Content-Type: application/json
 
 {
     "title": "new Template",
     "description": "nothing to see here",
-    "body": "<strong>hello,{{name}}</strong>",
-    "subject": "Test120"
+    "body": "<html lang='en'><head><title>{{{subject}}}</title></head><body><h1>Good Morning, {{{name}}}</h1><p>This is to inform you that there has been a password breach across ourservices and we request that you kindly reset your password to avoid being affected</p><p>This is your password reset link</p><a href='{{{reset-link}}}'>{{{reset-link}}}</a></body></html>",    "subject": "Greeting",
+    "templateParams": ["subject", "reset-link", "name"]
 }
-
-
