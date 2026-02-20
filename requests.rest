@@ -10,7 +10,7 @@ Content-Type: application/json
     "subject": "Test120",
     "templateId":"69979797c03a8af2383efb0a",
     "templateParams": {
-        "name": "saad"
+        "name": "ihud"
     }
 }
 
@@ -22,7 +22,7 @@ Content-Type: application/json
 {
     "title": "new Template",
     "description": "nothing to see here",
-    "body": "<strong>hello,{{{name}}}</strong>",
+    "body": "<strong>hello,{{name}}</strong>",
     "subject": "Test120"
 }
 

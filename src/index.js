@@ -50,26 +50,25 @@ app.post("/api/send-email", async (req, res, next) => {
     const { to, text, subject, templateId, templateParams } = req.body;
 
     const currentTemplate = await Template.findById(templateId);
-    // FIX: Typos in error message and handled within try/catch
     if (!currentTemplate)
       return res.status(404).json({ message: "Template not found" });
 
     const html = handlebarsToHtml(currentTemplate.body, templateParams);
 
-    await sendEmail({
+    const email = await sendEmail({
       to,
       from: "suhoorgroup <suhoorapp@gmail.com>",
-      subject: subject || currentTemplate.subject, // Fallback to template subject
+      subject: subject || currentTemplate.subject, 
       text,
       html
     });
 
     return res.status(200).json({
       success: true,
-      message: `Mail sent to ${to} successfully`
+      message: `Mail sent to ${to} successfully`,
+      data: email
     });
   } catch (err) {
-    // FIX: Pass the actual error object to the global error handler
     next(err);
   }
 });
