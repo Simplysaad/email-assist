@@ -1,10 +1,10 @@
 ﻿import express from "express";
 import "dotenv/config";
 import { sendEmail } from "./utils/nodemailer.util.js";
-import User from "./models/user.model.js";
 import Template from "./models/template.model.js";
 import connectDB from "./utils/db.js";
 import handlebarsToHtml from "./utils/handlebars.util.js";
+import keepAlive from "./utils/keep-alive.js";
 const app = express();
 
 app.use(express.json());
@@ -15,6 +15,15 @@ app.listen(process.env.PORT, () => {
   connectDB();
 });
 
+keepAlive()
+
+
+app.get("/", (req, res)=>{
+  return res.status(200).json({
+    success: true,
+    messages: `Today is ${new Date().toLocaleString()}, API is up and running`
+  })
+})
 
 app.post("/api/template", async (req, res, next) => {
   try {
