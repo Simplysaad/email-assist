@@ -71,7 +71,7 @@ app.post("/api/send-email", async (req, res, next) => {
   const {
     to, text, subject, templateId, templateParams
   } = req.body;
-
+let html;
   try {
 
     const currentTemplate = await Template.findById(templateId);
@@ -79,6 +79,9 @@ app.post("/api/send-email", async (req, res, next) => {
       return res.status(404).json({
       success: false, message: "Template not found"
     });
+
+html = handlebarsToHtml(currentTemplate.body, templateParams);
+
   }
 
   catch(err) {
@@ -87,8 +90,7 @@ app.post("/api/send-email", async (req, res, next) => {
     });
   }
 
-  const html = handlebarsToHtml(currentTemplate.body, templateParams);
-
+  
   try {
     const email = await sendEmail( {
       to,
