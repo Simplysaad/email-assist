@@ -1,5 +1,6 @@
 ﻿import express from "express";
 import "dotenv/config";
+import cors from "cors"
 import { sendEmail } from "./utils/nodemailer.util.js";
 import Template from "./models/template.model.js";
 import connectDB from "./utils/db.js";
@@ -17,6 +18,7 @@ app.listen(process.env.PORT, () => {
 
 keepAlive()
 
+app.use(cors())
 
 app.get("/", (req, res)=>{
   return res.status(200).json({
