@@ -6,7 +6,8 @@ export default function errorMiddleware(err, req, res, next) {
   const response = {
     status: "error",
     success: false,
-    message: err.message || "Internal Server Error"
+    message: err.message || "Internal Server Error",
+err
   };
 
   if (err.name === "JsonWebTokenError") {
