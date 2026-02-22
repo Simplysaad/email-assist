@@ -1,4 +1,5 @@
-﻿@BASE_URL = http://localhost:5000
+﻿# @BASE_URL = http://localhost:5000
+@BASE_URL = https://email-assist-rogue.vercel.app
 
 
 POST {{BASE_URL}}/api/send-email 
