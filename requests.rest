@@ -1,16 +1,16 @@
-﻿# @BASE_URL = http://localhost:5000
+﻿@BASE_URL = http://localhost:5000
 # @BASE_URL = https://email-assist-rouge.vercel.app
-@BASE_URL = https://email-assist-ztqp.onrender.com
+# @BASE_URL = https://email-assist-ztqp.onrender.com
 @templateID=699b8d97b7ef0de29d4429cb
 
 POST {{BASE_URL}}/api/send-email 
 Content-Type: application/json
 
 {
-    "to": ["mechseiko@gmail.com", "saadidris23@gmail.com"],
+    "to": ["mechseiko@gmail.com", "saadidris70@gmail.com"],
     "text": "nothing to see here",
     "subject": "Test120",
-    "templateId": "699b8d97b7ef0de29d4429cb",
+    "templateId": "69983ac6e50486c7a7bc8045",
     "templateParams": {
         "name": "saad",
         "subject": "Greetings 234",
