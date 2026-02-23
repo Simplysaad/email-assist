@@ -7,15 +7,15 @@ import Template from "./models/template.model.js";
 import connectDB from "./utils/db.js";
 import handlebarsToHtml from "./utils/handlebars.util.js";
 import keepAlive from "./utils/keep-alive.js";
+
 const app = express();
 
+// 1. GLOBAL MIDDLEWARE
+app.use(cors());
 app.use(express.json());
-app.use(
-  express.urlencoded({
-    extended: true
-  })
-);
+app.use(express.urlencoded({ extended: true }));
 
+// 2. DATABASE & SERVER START
 app.listen(process.env.PORT, () => {
   console.log(`connected to PORT ${process.env.PORT}`);
   connectDB();
@@ -23,8 +23,7 @@ app.listen(process.env.PORT, () => {
 
 keepAlive();
 
-app.use(cors());
-app.use(errorMiddleware);
+// 3. ROUTES
 app.get("/", (req, res) => {
   return res.status(200).json({
     success: true,
@@ -32,6 +31,7 @@ app.get("/", (req, res) => {
   });
 });
 
+// Create Template
 app.post("/api/template", async (req, res, next) => {
   const { title, subject, body, description, params = [] } = req.body;
   const random = Math.floor(Math.random() * 1000);
@@ -44,8 +44,7 @@ app.post("/api/template", async (req, res, next) => {
       params
     });
 
-    // Clean up slug generation
-    newTemplate.slug = `${title?.toLowerCase().split(" ").join("-")}-${random}`;
+    newTemplate.slug = `${title?.toLowerCase().split(" ").join("-") || "template"}-${random}`;
 
     await newTemplate.save();
     return res.status(201).json({
@@ -54,54 +53,52 @@ app.post("/api/template", async (req, res, next) => {
       data: newTemplate
     });
   } catch (err) {
-    // next(err);
-    return res.status(400).json({
-      success: false,
-      message: `Error encountered while getting templates`,
-      error: err
-    });
+    next(err); // Pass to errorMiddleware
   }
 });
 
+// Get Templates (Fixed logic flip)
 app.get(["/api/template", "/api/template/:id"], async (req, res, next) => {
   try {
-    let templates;
     const { id } = req.params;
+    const data = id ? await Template.findById(id) : await Template.find({});
 
-    if (id) templates = await Template.find({});
-    else templates = await Template.findById(id);
+    if (id && !data) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Template not found" });
+    }
 
     return res.status(200).json({
       success: true,
-      message: `templates returned successfully`,
-      data: templates
+      message: `Templates retrieved successfully`,
+      data
     });
   } catch (err) {
-    // next(err);
-    return res.status(400).json({
-      success: false,
-      message: `Error encountered while getting templates`,
-      error: err
-    });
+    next(err);
   }
 });
 
+// Send Email
 app.post("/api/send-email", async (req, res, next) => {
   const { to, text, subject, templateId, templateParams } = req.body;
   let html;
+  let currentTemplate;
+
   try {
-    const currentTemplate = await Template.findById(templateId);
-    if (!currentTemplate)
+    currentTemplate = await Template.findById(templateId);
+    if (!currentTemplate) {
       return res.status(404).json({
         success: false,
         message: "Template not found"
       });
-
+    }
     html = handlebarsToHtml(currentTemplate.body, templateParams);
   } catch (err) {
     return res.status(500).json({
       success: false,
-      message: "Error encountered while finding template"
+      message: "Error encountered while finding template",
+      error: err.message
     });
   }
 
@@ -120,12 +117,8 @@ app.post("/api/send-email", async (req, res, next) => {
       data: email
     });
   } catch (err) {
-    // next(err);
-
-    return res.status(500).json({
-      success: false,
-      message: "Error encountered while sending email",
-      error: err
-    });
+    next(err);
   }
 });
+
+app.use(errorMiddleware);
