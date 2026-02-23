@@ -57,6 +57,29 @@ app.post("/api/template", async (req, res, next) => {
     // next(err);
     return res.status(400).json({
       success: false,
+      message: `Error encountered while getting templates`,
+      error: err
+    });
+  }
+});
+
+app.get(["/api/template", "/api/template/:id"], async (req, res, next) => {
+  try {
+    let templates;
+    const { id } = req.params;
+
+    if (id) templates = Template.find({});
+    else templates = Template.findById(id);
+
+    return res.status(200).json({
+      success: true,
+      message: `templates returned successfully`,
+      data: template
+    });
+  } catch (err) {
+    // next(err);
+    return res.status(400).json({
+      success: false,
       message: `Error encountered while creating new template`,
       error: err
     });
