@@ -1,5 +1,5 @@
-﻿@BASE_URL = http://localhost:5000
-# @BASE_URL = https://email-assist-rouge.vercel.app
+﻿# @BASE_URL = http://localhost:5000
+@BASE_URL = https://email-assist-rouge.vercel.app
 # @BASE_URL = https://email-assist-ztqp.onrender.com
 @templateID=699b8d97b7ef0de29d4429cb
 

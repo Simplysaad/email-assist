@@ -7,7 +7,9 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: process.env.GMAIL_USER,
     pass: process.env.GMAIL_PASS
-  }
+  },
+  pool: false,
+  maxConnections: 1
 });
 
 export async function sendEmail(emailOptions) {
@@ -22,9 +24,11 @@ export async function sendEmail(emailOptions) {
       html
     });
 
+    console.log("Message sent: %s", info.messageId)
     return email;
+
   } catch (err) {
-    console.error("Error sending email:", err);
+    console.error("Nodemailer Error:", err.message);
     throw err;
   }
 }
